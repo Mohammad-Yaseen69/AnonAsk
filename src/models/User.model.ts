@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose"
+import mongoose, { Schema, Document, InferSchemaType, Model } from "mongoose"
 
 interface User extends Document {
     username: string,
@@ -7,8 +7,8 @@ interface User extends Document {
     fullName: string;
     isReceivingFeedback: boolean;
     isVerified: boolean;
-    
-}   
+
+}
 
 const UserSchema: Schema<User> = new Schema({
     username: {
@@ -41,6 +41,9 @@ const UserSchema: Schema<User> = new Schema({
     }
 })
 
-const User = mongoose.models.User || mongoose.model<User>("User", UserSchema)
+
+export type UserType = InferSchemaType<typeof UserSchema>;
+
+const User = mongoose.models.User as Model<UserType> || mongoose.model<UserType>("User", UserSchema)
 
 export default User
