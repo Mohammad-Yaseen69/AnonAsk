@@ -12,7 +12,8 @@ import { ApiResponse } from "@/helpers/apiResponse";
 export async function POST(req: Request) {
     await dbConnect()
     try {
-        const data = await validate(SignUpSchema, req.body)
+        const body = await req.json()
+        const data = await validate(SignUpSchema, body)
 
         if (!data.success) {
             return Response.json(data.error, { status: 400 });
@@ -57,7 +58,7 @@ export async function POST(req: Request) {
 
         const emailRes = await sendEmail(safeData.email, otp, safeData.username)
 
-        if (!emailRes.status) {
+        if (!emailRes.success) {
             return Response.json(ApiResponse(emailRes.status, emailRes.message), { status: 500 })
         }
 
