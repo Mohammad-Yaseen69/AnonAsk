@@ -10,6 +10,7 @@ export const sendEmail = async (email: string, otp: number, username: string): P
             subject: 'AnonAsk Account Verification',
             react: VerifyEmail({ otp }),
         });
+        console.log(`Email sent to ${email}`)
         return {
             success: true,
             status: 200,
