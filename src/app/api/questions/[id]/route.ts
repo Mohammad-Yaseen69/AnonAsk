@@ -8,7 +8,6 @@ import { UpdateQuestionInput, UpdateQuestionSchema } from "@/schemas/Questions.v
 
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
-    await dbConnect()
     try {
         const authcheck = await checkAuth(true)
 
@@ -35,7 +34,9 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
             return Response.json(ApiResponse(404, "Question not found"), { status: 404 })
         }
 
-        question.isActive = safeData.isActive || question.isActive
+        if (typeof safeData.isActive === "boolean") {
+            question.isActive = safeData.isActive
+        }
         question.questionText = safeData.questionText
 
         await question.save()
@@ -48,8 +49,6 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 }
 
 export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
-    await dbConnect()
-
     try {
         const authcheck = await checkAuth(true)
 
@@ -81,7 +80,6 @@ export async function DELETE(_req: Request, { params }: { params: { id: string }
 }
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
-    await dbConnect()
 
     try {
         const authcheck = await checkAuth(true)
@@ -101,7 +99,7 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
             return Response.json(ApiResponse(404, "Question not found"), { status: 404 })
         }
 
-        return Response.json(ApiResponse(200, "Question deleted successfully", question), { status: 200 })
+        return Response.json(ApiResponse(200, "Question fetch successfully", question), { status: 200 })
     } catch (error) {
         console.log("Error while getting question", error)
         return Response.json({ message: "Internal Server Error" }, { status: 500 })

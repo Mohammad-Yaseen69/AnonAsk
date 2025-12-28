@@ -1,13 +1,11 @@
 import { ApiResponse } from "@/helpers/apiResponse";
 import { checkAuth } from "@/helpers/checkAuth";
 import { validate } from "@/helpers/validatePayload";
-import dbConnect from "@/lib/dbConnect";
 import Questions from "@/models/Questions.model";
 import { Error } from "../auth/check-username/route";
 import { QuestionInput, QuestionSchema } from "@/schemas/Questions.validation";
 
 export async function POST(req: Request) {
-    dbConnect()
     try {
         const authcheck = await checkAuth(true)
 
@@ -46,7 +44,6 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-    await dbConnect()
     try {
         const authcheck = await checkAuth(true)
 
