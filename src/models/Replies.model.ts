@@ -1,12 +1,12 @@
-import mongoose, { Schema, Document } from "mongoose"
+import mongoose, { Schema, Document, InferSchemaType, Model } from "mongoose"
 
-interface Replies extends Document {
+interface IReplies extends Document {
     content: string;
     questionId: mongoose.Types.ObjectId;
     userId: mongoose.Types.ObjectId;
 }
 
-const RepliesSchema: Schema<Replies> = new Schema({
+const RepliesSchema: Schema<IReplies> = new Schema({
     content: {
         type: String,
         required: true,
@@ -15,6 +15,8 @@ const RepliesSchema: Schema<Replies> = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: "User" },
 })
 
-const Replies = mongoose.models.Replies || mongoose.model<Replies>("Replies", RepliesSchema)
+export type Repliestype = InferSchemaType<typeof RepliesSchema>;
+
+const Replies = mongoose.models.Replies as Model<Repliestype> || mongoose.model<IReplies>("Replies", RepliesSchema)
 
 export default Replies
