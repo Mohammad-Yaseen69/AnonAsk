@@ -4,6 +4,7 @@ interface IReplies extends Document {
     content: string;
     questionId: mongoose.Types.ObjectId;
     userId: mongoose.Types.ObjectId;
+    isDirectReply: boolean
 }
 
 const RepliesSchema: Schema<IReplies> = new Schema({
@@ -12,6 +13,10 @@ const RepliesSchema: Schema<IReplies> = new Schema({
         required: true,
     },
     questionId: { type: Schema.Types.ObjectId, ref: "Questions" },
+    isDirectReply: {
+        type: Boolean,
+        default: false
+    },
     userId: { type: Schema.Types.ObjectId, ref: "User" },
 })
 
