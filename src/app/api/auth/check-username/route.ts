@@ -5,7 +5,7 @@ import { ApiResponse } from "@/helpers/apiResponse";
 import { validate } from "@/helpers/validatePayload";
 import { UserNameValidation } from "@/schemas/User.validation";
 
-interface Error {
+export interface Error {
     field: string,
     message: string
 }
