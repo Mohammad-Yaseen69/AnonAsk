@@ -3,7 +3,7 @@ import { openai } from "@ai-sdk/openai"
 import { ApiResponse } from "@/helpers/apiResponse"
 import { redis } from "@/lib/redis"
 
-const prompt = `Generate 2-5 short, natural reply suggestions for the given question. Format: "Suggestion one | Suggestion two | Suggestion three". No explanations, numbering, or extra text make sure to give atleast 5 suggestions. If the question is inappropriate (sexual, harmful, or offensive), respond only with: "Sorry, can't provide suggestions for this question!"`
+const prompt = `Generate 2-5 short, natural reply suggestions for the given question. Format: "Suggestion one | Suggestion two | Suggestion three". No explanations, numbering, or extra text make sure to give atleast 5 suggestions. If the question is inappropriate (sexual, harmful, or offensive), respond only with: "Sorry, can't provide suggestions for this question! IMPORTANT: Make sure to keep the complete response under 80 tokens.`
 
 export async function POST(req: Request) {
     try {
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
         console.log('Cache MISS:', question.substring(0, 50))
 
         const result = await streamText({
-            model: openai("gpt-3.5-turbo"),
+            model: openai("gpt-4o-mini"),
             system: prompt,
             messages: [
                 {
