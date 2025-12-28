@@ -75,7 +75,10 @@ export async function POST(req: Request) {
             await verifyToken.save()
         }
 
-        return Response.json(ApiResponse(200, "Signup successful, verification email sent"), { status: 200 });
+        return Response.json(ApiResponse(200, "Signup successful, verification email sent", {
+            email: safeData.email,
+            username: safeData.username
+        }), { status: 200 });
     } catch (error) {
         console.log("Error while logging user", error)
         return Response.json(ApiError(500, "Internal Server Error"), { status: 500 });
