@@ -109,8 +109,17 @@
   }
 
   body {
-    @apply bg-gradient-to-br from-violet-950 via-slate-900 to-slate-950 text-foreground;
+    @apply bg-linear-to-br min-h-screen from-violet-950 via-slate-900 to-slate-950 text-foreground;
   }
+}
+
+
+.gradientText {
+  @apply bg-linear-to-r from-violet-300 to-purple-700 bg-clip-text text-transparent
+}
+
+.gradientBtn{
+  @apply text-base font-semibold bg-linear-to-r from-violet-700 to-purple-600 hover:from-violet-600 hover:to-purple-700 cursor-pointer text-white border-0
 }
 
 /* Sonner Toast Styling */
