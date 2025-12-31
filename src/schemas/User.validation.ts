@@ -11,7 +11,7 @@ export const SignUpSchema = z.object({
 })
 
 export const LoginSchema = z.object({
-    email: z.string().email("Invalid email address"),
+    email: z.string(),
     password: z.string().min(6, "Password must be at least 6 characters long"),
 })
 
@@ -20,6 +20,11 @@ export const VerifySchema = z.object({
     otp: z.number(),
 })
 
+export const ResendEmailSchema = z.object({
+    email: z.string().email("Invalid email address"),
+})
+
 
 export type SignUpInput = z.infer<typeof SignUpSchema>
 export type LoginInput = z.infer<typeof LoginSchema>
+export type ResendEmailInput = z.infer<typeof ResendEmailSchema>
