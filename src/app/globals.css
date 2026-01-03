@@ -113,7 +113,9 @@
   }
 }
 
-
+.cardBg {
+  @apply bg-slate-900/50 border-violet-500/20 shadow-2xl backdrop-blur-sm
+}
 .gradientText {
   @apply bg-linear-to-r from-violet-300 to-purple-700 bg-clip-text text-transparent
 }

@@ -30,7 +30,7 @@ const SignUp = () => {
 
 
   const onSubmit = async (data: LoginInput) => {
-    setIsPending(false)
+    setIsPending(true)
     const result = await signIn('credentials', {
       ...data,
       redirect: false
@@ -51,11 +51,12 @@ const SignUp = () => {
         router.push(`/dashboard`)
       }, 1000)
     }
+    setIsPending(false)
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-lg bg-slate-900/50 border-violet-500/20 shadow-2xl backdrop-blur-sm">
+      <Card className="w-full max-w-lg cardBg">
         <CardHeader className="space-y-3 text-center pb-3">
           <div className="mx-auto w-16 h-16 rounded-full bg-violet-500/10 flex items-center justify-center mb-2">
             <div className="w-10 h-10 rounded-full bg-violet-500/20 flex items-center justify-center">
