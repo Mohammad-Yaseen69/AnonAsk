@@ -8,7 +8,7 @@ export async function proxy(request: NextRequest) {
 
     if (
         token &&
-        (url.pathname === "/sign-in" || url.pathname === "/sign-up" || url.pathname === "/verify")
+        (url.pathname === "/sign-in" || url.pathname === "/sign-up" || url.pathname === "/verify" || url.pathname === "/")
     ) {
         return NextResponse.redirect(new URL('/dashboard', request.url))
     }
