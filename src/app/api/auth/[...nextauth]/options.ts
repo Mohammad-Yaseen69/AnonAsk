@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
     },
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger, session }) {
             if (user) {
                 token._id = user._id
                 token.username = user.username
@@ -60,6 +60,19 @@ export const authOptions: NextAuthOptions = {
                 token.isVerified = user.isVerified
                 token.fullName = user.fullName
             }
+
+            if (trigger === "update" && token._id) {
+                await dbConnect()
+                const freshUser = await User.findById(token._id)
+                if (freshUser) {
+                    token.isReceivingFeedback = freshUser.isReceivingFeedback
+                    token.isVerified = freshUser.isVerified
+                    token.fullName = freshUser.fullName
+                    token.username = freshUser.username
+                    token.email = freshUser.email
+                }
+            }
+
             return token
         },
         async session({ session, token }) {
