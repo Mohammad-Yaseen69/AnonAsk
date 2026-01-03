@@ -16,6 +16,8 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         }
 
         const user = authcheck.user
+        const param = await params
+        const id = param.id
 
         const body = await req.json()
 
@@ -28,7 +30,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 
         const safeData = data.data as UpdateQuestionInput
 
-        const question = await Questions.findOne({ userId: user?._id, _id: params.id })
+        const question = await Questions.findOne({ userId: user?._id, _id: id })
 
         if (!question) {
             return Response.json(ApiResponse(404, "Question not found"), { status: 404 })
@@ -57,14 +59,16 @@ export async function DELETE(_req: Request, { params }: { params: { id: string }
         }
 
         const user = authcheck.user
+        const param = await params
+        const id = param.id
 
         const deletedQuestion = await Questions.findOneAndDelete({
             userId: user?._id,
-            _id: params.id
+            _id: id
         })
 
         await Replies.deleteMany({
-            questionId: params.id,
+            questionId: id,
             userId: user?._id
         })
 
@@ -89,10 +93,12 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
         }
 
         const user = authcheck.user
+        const param = await params
+        const id = param.id
 
         const question = await Questions.findOne({
             userId: user?._id,
-            _id: params.id
+            _id: id
         }).populate("feedbackAnswers")
 
         if (!question) {

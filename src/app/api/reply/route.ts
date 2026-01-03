@@ -23,9 +23,9 @@ export async function GET() {
             isDirectReply: true
         })
 
-        return Response.json(ApiResponse(200, "Questions fetched successfully", directReplies), { status: 200 })
+        return Response.json(ApiResponse(200, "Direct replies fetched successfully", directReplies), { status: 200 })
     } catch (error) {
-        console.log("Error while fetching questions", error)
+        console.log("Error while fetching direct replies", error)
         return Response.json(ApiResponse(500, "Internal Server Error"), { status: 500 })
     }
 }
