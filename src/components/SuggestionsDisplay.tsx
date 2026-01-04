@@ -1,26 +1,31 @@
-import React from 'react'
+'use client'
+
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Sparkles, Loader2 } from 'lucide-react'
+import { Sparkles, Loader2, CloudLightning, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface SuggestionsDisplayProps {
     suggestions: string[]
     isLoading?: boolean
     onSuggestionClick?: (suggestion: string) => void
+    isAI: boolean
 }
 
 export const SuggestionsDisplay = ({
     suggestions,
     isLoading,
-    onSuggestionClick
+    onSuggestionClick,
+    isAI
 }: SuggestionsDisplayProps) => {
+
     if (isLoading) {
         return (
             <Card className="cardBg mt-4">
                 <CardHeader>
                     <CardTitle className="text-xl gradientText flex items-center gap-2">
-                        <Sparkles className="h-5 w-5" />
-                        AI Suggestions
+                        {isAI ? <Sparkles className="h-5 w-5 text-purple-500" /> : <CloudLightning className="h-5 w-5 text-purple-500" />}
+                        {isAI ? "AI Suggestions" : "Quick Suggestions"}
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="flex items-center justify-center py-8">
@@ -32,13 +37,13 @@ export const SuggestionsDisplay = ({
             </Card>
         )
     }
-        
+
     return (
         <Card className="cardBg mt-4">
             <CardHeader>
                 <CardTitle className="text-xl gradientText flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-purple-500" />
-                    AI Suggestions
+                    {isAI ? <Sparkles className="h-5 w-5 text-purple-500" /> : <Zap className="h-5 w-5 text-purple-500" />}
+                    {isAI ? "AI Suggestions" : "Quick Suggestions"}
                 </CardTitle>
             </CardHeader>
             <CardContent>
