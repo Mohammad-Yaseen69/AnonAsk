@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
-import { MessageSquare, LogOut, User } from 'lucide-react'
+import { LogOut, User } from 'lucide-react'
 import Image from 'next/image'
 
 const Navbar = () => {
@@ -17,7 +17,7 @@ const Navbar = () => {
 
                     <Link href="/" className="flex items-center gap-2 group">
                         <div className="relative flex items-center">
-                            <Image src='/logo.png' width={25} height={10} alt='logo'/>
+                            <Image src='/logo.png' width={25} height={10} alt='logo' />
                             <div className="absolute inset-0 bg-purple-500/20 blur-xl rounded-full group-hover:bg-purple-500/30 transition-colors" />
                         </div>
                         <span className="text-xl font-bold gradientText">AnonAsk</span>

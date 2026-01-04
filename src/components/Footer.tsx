@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { MessageSquare, Github, Twitter, Mail } from 'lucide-react'
+import { MessageSquare, Github, Twitter, Mail, Linkedin } from 'lucide-react'
 
 const Footer = ({ isDashboard }: { isDashboard?: boolean }) => {
   return (
@@ -63,25 +63,28 @@ const Footer = ({ isDashboard }: { isDashboard?: boolean }) => {
               <h3 className="text-sm font-semibold text-foreground">Connect</h3>
               <div className="flex gap-4">
                 <a
-                  href="#"
+                  target='_blank'
+                  href="https://github.com/Mohammad-Yaseen69"
                   className="text-muted-foreground hover:text-purple-400 transition-colors"
                   aria-label="GitHub"
                 >
                   <Github className="h-5 w-5" />
                 </a>
                 <a
-                  href="#"
+                  target='_blank'
+                  href="https://x.com/MohammadYaxeen"
                   className="text-muted-foreground hover:text-purple-400 transition-colors"
                   aria-label="Twitter"
                 >
                   <Twitter className="h-5 w-5" />
                 </a>
                 <a
-                  href="#"
+                  target='_blank'
+                  href="https://www.linkedin.com/in/mohammad-yaseen106"
                   className="text-muted-foreground hover:text-purple-400 transition-colors"
-                  aria-label="Email"
+                  aria-label="Linkedin"
                 >
-                  <Mail className="h-5 w-5" />
+                  <Linkedin className="h-5 w-5" />
                 </a>
               </div>
             </div>
@@ -90,7 +93,7 @@ const Footer = ({ isDashboard }: { isDashboard?: boolean }) => {
 
         <div className={`${!isDashboard ? "mt-8 pt-8 border-t border-purple-500/20" : ""} flex flex-col sm:flex-row justify-between items-center gap-4`}>
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} AnonAsk. All rights reserved. Made by <a href="https://yaseen-developer.netlify.app/" target='_blank' className="gradientText font-bold">Yaseen</a>
+            © {new Date().getFullYear()} AnonAsk. All rights reserved. Made by <a href="http  s://yaseen-developer.netlify.app/" target='_blank' className="gradientText font-bold">Yaseen</a>
           </p>
 
 
