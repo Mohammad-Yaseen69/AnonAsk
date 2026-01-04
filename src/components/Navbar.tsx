@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { MessageSquare, LogOut, User } from 'lucide-react'
+import Image from 'next/image'
 
 const Navbar = () => {
     const { data: session, status } = useSession()
@@ -15,8 +16,8 @@ const Navbar = () => {
                 <div className="flex h-16 items-center justify-between">
 
                     <Link href="/" className="flex items-center gap-2 group">
-                        <div className="relative">
-                            <MessageSquare className="h-7 w-7 text-purple-400 group-hover:text-purple-300 transition-colors" />
+                        <div className="relative flex items-center">
+                            <Image src='/logo.png' width={25} height={10} alt='logo'/>
                             <div className="absolute inset-0 bg-purple-500/20 blur-xl rounded-full group-hover:bg-purple-500/30 transition-colors" />
                         </div>
                         <span className="text-xl font-bold gradientText">AnonAsk</span>
