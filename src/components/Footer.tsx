@@ -90,13 +90,15 @@ const Footer = ({ isDashboard }: { isDashboard?: boolean }) => {
 
         <div className={`${!isDashboard ? "mt-8 pt-8 border-t border-purple-500/20" : ""} flex flex-col sm:flex-row justify-between items-center gap-4`}>
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} AnonAsk. All rights reserved.
+            © {new Date().getFullYear()} AnonAsk. All rights reserved. Made by <a href="https://yaseen-developer.netlify.app/" target='_blank' className="gradientText font-bold">Yaseen</a>
           </p>
+
+
           <div className="flex gap-6 text-sm text-muted-foreground">
-            <Link href="#" className="hover:text-purple-400 transition-colors">
+            <Link href="/privacy-policy" className="hover:text-purple-400 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="#" className="hover:text-purple-400 transition-colors">
+            <Link href="/terms-and-conditions" className="hover:text-purple-400 transition-colors">
               Terms of Service
             </Link>
           </div>
