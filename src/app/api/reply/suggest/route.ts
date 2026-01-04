@@ -31,7 +31,12 @@ export async function POST(req: Request) {
             })
         }
 
-        const tokenData = JSON.parse(tokenDataRaw as string)
+        let tokenData;
+        if (typeof tokenDataRaw === 'string') {
+            tokenData = JSON.parse(tokenDataRaw)
+        } else {
+            tokenData = tokenDataRaw
+        }
 
         if (tokenData.ip !== ip) {
             return Response.json(ApiResponse(401, "Token IP mismatch"), {
