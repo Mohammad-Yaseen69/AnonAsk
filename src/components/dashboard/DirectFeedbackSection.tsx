@@ -8,19 +8,22 @@ import { Button } from '@/components/ui/button'
 import { Copy } from 'lucide-react'
 import { toast } from 'sonner'
 import CustomToggle from './CustomToggle'
+import FeedbackSkeleton from '../skeletons/FeedbackSkeleton'
 
 interface DirectFeedbackSectionProps {
     username: string | undefined
     isReceivingFeedback: boolean
     onToggleFeedback: () => void
     isToggling: boolean
+    isLoading: boolean
 }
 
 export const DirectFeedbackSection: React.FC<DirectFeedbackSectionProps> = ({
     username,
     isReceivingFeedback,
     onToggleFeedback,
-    isToggling
+    isToggling,
+    isLoading 
 }) => {
     const copyDirectFeedbackLink = () => {
         const link = `${typeof window !== 'undefined' ? window.location.origin : ''}/feedback/${username}`
@@ -28,6 +31,10 @@ export const DirectFeedbackSection: React.FC<DirectFeedbackSectionProps> = ({
         toast.success('Direct feedback link copied to clipboard!')
     }
 
+
+    if (isLoading) {
+        return <FeedbackSkeleton />
+    }
     return (
         <Card className="cardBg">
             <CardHeader>

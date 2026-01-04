@@ -27,9 +27,12 @@ import { EmptyState } from '@/components/dashboard/EmptyState'
 import { QuestionFormDialog } from '@/components/dashboard/QuestionFormDialog'
 import { ViewQuestionDialog } from '@/components/dashboard/ViewQuestionDialog'
 import { DeleteConfirmationDialog } from '@/components/dashboard/DeleteConfirmationDialog'
+import { QuestionCardSkeleton } from '@/components/skeletons/QuestionCardSkeleton'
+import { DirectReplyCardSkeleton } from '@/components/skeletons/DirectReplyCardSkeleton'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const Dashboard = () => {
-    const { data: session, update } = useSession()
+    const { data: session, update, status } = useSession()
     const queryClient = useQueryClient()
     const [createDialogOpen, setCreateDialogOpen] = useState(false)
     const [viewDialogOpen, setViewDialogOpen] = useState(false)
@@ -43,6 +46,7 @@ const Dashboard = () => {
 
     const [createQuestionText, setCreateQuestionText] = useState('')
     const [editQuestionText, setEditQuestionText] = useState('')
+    const isLoadingSession = status === "loading"
 
     const { data: questions = [], isLoading: questionsLoading } = useQuery({
         queryKey: ['questions'],
@@ -211,6 +215,7 @@ const Dashboard = () => {
                     isReceivingFeedback={isReceivingFeedback}
                     onToggleFeedback={() => toggleFeedbackMutation.mutate()}
                     isToggling={toggleFeedbackMutation.isPending}
+                    isLoading={isLoadingSession}
                 />
 
                 <Tabs defaultValue="questions" className="w-full">
@@ -222,20 +227,23 @@ const Dashboard = () => {
                     <TabsContent value="questions" className="space-y-4">
                         <div className="flex justify-between items-center">
                             <h2 className="text-xl font-semibold">Your Questions</h2>
-                            <Button
-                                onClick={() => setCreateDialogOpen(true)}
-                                className="gradientBtn"
-                            >
-                                <Plus className="h-4 w-4 mr-2" />
-                                Create Question
-                            </Button>
+                            {
+                                questionsLoading ? <Skeleton className='py-2 w-[149px] h-[32px] px-4 rounded-md' /> :
+                                    <Button
+                                        onClick={() => setCreateDialogOpen(true)}
+                                        className="gradientBtn"
+                                    >
+                                        <Plus className="h-4 w-4 mr-2" />
+                                        Create Question
+                                    </Button>
+                            }
                         </div>
 
                         <Card className="cardBg">
                             <CardContent className="py-4 text-center">
                                 {questionsLoading ? (
-                                    <div className="text-center py-8 text-muted-foreground">
-                                        Loading questions...
+                                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+                                        {Array.from({ length: 3 }).map((_, idx) => <QuestionCardSkeleton key={idx} />)}
                                     </div>
                                 ) : questions.length === 0 ? (
                                     <EmptyState message="No questions yet. Create your first question!" />
@@ -269,22 +277,23 @@ const Dashboard = () => {
                         <Card className="cardBg">
                             <CardContent className="py-12 text-center">
                                 {repliesLoading ? (
-                                    <div className="text-center py-8 text-muted-foreground">
-                                        Loading replies...
+                                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+                                        {Array.from({ length: 3}).map((_, idx) => <DirectReplyCardSkeleton key={idx} />)}
                                     </div>
-                                ) : directReplies.length === 0 ? (
-                                    <EmptyState message="No direct replies yet." />
-                                ) : (
-                                    <div className="space-y-3">
-                                        {directReplies.map((reply) => (
-                                            <DirectReplyCard
-                                                key={String(reply._id)}
-                                                reply={reply}
-                                                onDelete={handleDeleteReply}
-                                            />
-                                        ))}
-                                    </div>
-                                )}
+                                )
+                                    : directReplies.length === 0 ? (
+                                        <EmptyState message="No direct replies yet." />
+                                    ) : (
+                                        <div className="space-y-3">
+                                            {directReplies.map((reply) => (
+                                                <DirectReplyCard
+                                                    key={String(reply._id)}
+                                                    reply={reply}
+                                                    onDelete={handleDeleteReply}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
                             </CardContent>
                         </Card>
                     </TabsContent>
