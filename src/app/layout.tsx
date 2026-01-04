@@ -1,45 +1,40 @@
-'use client'
-
-import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
-import AuthContextProvider from "@/context/AuthProvider";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { useState } from "react";
-import { ThemeProvider } from "@/components/theme-provider";
+import { Metadata } from "next";
+import Providers from "@/components/Providers";
 
-
+export const metadata: Metadata = {
+  title: "AnonAsk - Anonymous Q&A Platform",
+  description: "Ask and answer questions anonymously. Get honest feedback and suggestions powered by AI.",
+  keywords: ["anonymous", "questions", "feedback", "Q&A", "AI suggestions"],
+  authors: [{ name: "Yaseen" }],
+  openGraph: {
+    title: "AnonAsk - Anonymous Q&A Platform",
+    description: "Ask and answer questions anonymously with AI-powered suggestions",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AnonAsk - Anonymous Q&A Platform",
+    description: "Ask and answer questions anonymously with AI-powered suggestions",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  const [queryClient] = useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-        retry: 1,
-      }
-    }
-  }))
-
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
-        <AuthContextProvider>
-          <ThemeProvider
-            defaultTheme="dark"
-            enableSystem
-            attribute={"class"}
-            disableTransitionOnChange
-          >
-            <QueryClientProvider client={queryClient}>
-              {children}
-              <Toaster />
-            </QueryClientProvider>
-          </ThemeProvider>
-        </AuthContextProvider>
+      <body suppressHydrationWarning>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );
