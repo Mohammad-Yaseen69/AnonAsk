@@ -23,24 +23,24 @@ const Footer = () => {
             <h3 className="text-sm font-semibold text-foreground">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link 
-                  href="/" 
+                <Link
+                  href="/"
                   className="text-sm text-muted-foreground hover:text-purple-400 transition-colors"
                 >
                   Home
                 </Link>
               </li>
               <li>
-                <Link 
-                  href="/sign-up" 
+                <Link
+                  href="/sign-up"
                   className="text-sm text-muted-foreground hover:text-purple-400 transition-colors"
                 >
                   Sign Up
                 </Link>
               </li>
               <li>
-                <Link 
-                  href="/sign-in" 
+                <Link
+                  href="/sign-in"
                   className="text-sm text-muted-foreground hover:text-purple-400 transition-colors"
                 >
                   Sign In
@@ -64,22 +64,22 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-foreground">Connect</h3>
             <div className="flex gap-4">
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="text-muted-foreground hover:text-purple-400 transition-colors"
                 aria-label="GitHub"
               >
                 <Github className="h-5 w-5" />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="text-muted-foreground hover:text-purple-400 transition-colors"
                 aria-label="Twitter"
               >
                 <Twitter className="h-5 w-5" />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="text-muted-foreground hover:text-purple-400 transition-colors"
                 aria-label="Email"
               >
