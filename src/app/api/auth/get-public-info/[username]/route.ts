@@ -2,7 +2,10 @@ import { ApiResponse } from "@/helpers/apiResponse"
 import dbConnect from "@/lib/dbConnect"
 import User from "@/models/User.model"
 
-export const GET = async (_req: Request, { params }: { params: { username: string } }) => {
+export const GET = async (
+    _req: Request, 
+    { params }: { params: Promise<{ username: string }> }
+) => {
     await dbConnect()
     try {
         const param = await params
@@ -11,7 +14,6 @@ export const GET = async (_req: Request, { params }: { params: { username: strin
         const foundUser = await User.findOne({
             username
         }).select("fullName isReceivingFeedback username isVerified")
-
 
         if (!foundUser) {
             return Response.json(ApiResponse(404, "User not found."), { status: 404 })
