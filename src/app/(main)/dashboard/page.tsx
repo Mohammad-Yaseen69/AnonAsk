@@ -214,7 +214,7 @@ const Dashboard = () => {
                 />
 
                 <Tabs defaultValue="questions" className="w-full">
-                    <TabsList className="bg-muted">
+                    <TabsList className="bg-muted gap-2">
                         <TabsTrigger value="questions">Questions</TabsTrigger>
                         <TabsTrigger value="replies">Direct Replies</TabsTrigger>
                     </TabsList>
