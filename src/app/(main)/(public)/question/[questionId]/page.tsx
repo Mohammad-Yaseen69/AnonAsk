@@ -38,7 +38,7 @@ const QuestionReply = () => {
                         Annonymous Message
                     </h1>
                     <p className="font-semibold mt-1 text-foreground text-sm">
-                        Answer this question anonymously for, {user?.fullName}
+                        Reply anonymously to {user?.fullName}&apos;s question
                     </p>
                     <SendMessageSection
                         isDirectReply={false}

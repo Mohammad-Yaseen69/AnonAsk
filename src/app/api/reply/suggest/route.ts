@@ -5,6 +5,8 @@ import { redis } from "@/lib/redis"
 
 const prompt = `Generate 2-5 short, natural reply suggestions for the given question. Format: "Suggestion one | Suggestion two | Suggestion three". No explanations, numbering, or extra text make sure to give atleast 5 suggestions. If the question is inappropriate (sexual, harmful, or offensive), respond only with: "Sorry, can't give answer for this question! IMPORTANT: Make sure to keep the complete response under 80 tokens.`
 
+export const runtime = 'edge'
+
 export async function POST(req: Request) {
     try {
         const { question } = await req.json()
@@ -14,6 +16,14 @@ export async function POST(req: Request) {
             return Response.json(ApiResponse(400, "Question is required"), {
                 status: 400,
             })
+        }
+
+        const cacheKey = `suggestion:${question.trim().toLowerCase()}`
+        const cachedSuggestions = await redis.get(cacheKey)
+
+        if (cachedSuggestions) {
+            console.log("Cache HIT:", question.substring(0, 50))
+            return new Response(cachedSuggestions as string)
         }
 
         const rateKey = `suggest:rate:${ip}`
@@ -69,22 +79,7 @@ export async function POST(req: Request) {
 
         // await redis.del(tokenKey)
 
-        const cacheKey = `suggestion:${question.trim().toLowerCase()}`
-        const cachedSuggestions = await redis.get(cacheKey)
 
-        if (cachedSuggestions) {
-            console.log("Cache HIT:", question.substring(0, 50))
-            return new Response(cachedSuggestions as string, {
-                headers: {
-                    "Content-Type": "text/plain",
-                    "X-Cache": "HIT",
-                    'X-RateLimit-Limit': '10',
-                    'X-RateLimit-Remaining': String(10 - hits),
-                },
-            })
-        }
-
-        console.log("Cache MISS:", question.substring(0, 50))
 
         const result = await streamText({
             model: openai("gpt-4o-mini"),
