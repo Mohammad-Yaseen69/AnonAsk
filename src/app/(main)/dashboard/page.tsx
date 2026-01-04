@@ -19,7 +19,7 @@ import {
 } from '@/queries/Dashboard'
 import { QuestionType } from '@/models/Questions.model'
 import { QuestionInput } from '@/schemas/Questions.validation'
-import { Plus } from 'lucide-react'
+import { Plus, RefreshCcw } from 'lucide-react'
 import { DirectFeedbackSection } from '@/components/dashboard/DirectFeedbackSection'
 import { QuestionCard } from '@/components/dashboard/QuestionCard'
 import { DirectReplyCard } from '@/components/dashboard/DirectReplyCard'
@@ -53,7 +53,7 @@ const Dashboard = () => {
         queryFn: getQuestionsList,
     })
 
-    const { data: directReplies = [], isLoading: repliesLoading } = useQuery({
+    const { data: directReplies = [], isLoading: repliesLoading, refetch: refetchDirect } = useQuery({
         queryKey: ['directReplies'],
         queryFn: getDirectReplies,
     })
@@ -226,7 +226,7 @@ const Dashboard = () => {
 
                     <TabsContent value="questions" className="space-y-4">
                         <div className="flex justify-between items-center">
-                            <h2 className="text-xl font-semibold">Your Questions</h2>
+                            <h2 className="text-xl font-semibold">Annoymous Messages</h2>
                             {
                                 questionsLoading ? <Skeleton className='py-2 w-[149px] h-[32px] px-4 rounded-md' /> :
                                     <Button
@@ -240,7 +240,7 @@ const Dashboard = () => {
                         </div>
 
                         <Card className="cardBg">
-                            <CardContent className="py-4 text-center">
+                            <CardContent className="text-center">
                                 {questionsLoading ? (
                                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
                                         {Array.from({ length: 3 }).map((_, idx) => <QuestionCardSkeleton key={idx} />)}
@@ -250,7 +250,7 @@ const Dashboard = () => {
                                 ) : (
                                     <>
                                         <h3 className="font-semibold text-xl mb-5 text-left">
-                                            Questions List:
+                                            Your Questions:
                                         </h3>
                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                             {questions.map((question: QuestionType) => (
@@ -271,28 +271,43 @@ const Dashboard = () => {
 
                     <TabsContent value="replies" className="space-y-4">
                         <div className="flex justify-between items-center">
-                            <h2 className="text-xl font-semibold">Direct Replies</h2>
+                            <h2 className="text-xl font-semibold">Annoymous Messages</h2>
+                            {
+                                questionsLoading ? <Skeleton className='py-2 w-[149px] h-[32px] px-4 rounded-md' /> :
+                                    <Button
+                                        onClick={() => refetchDirect()}
+                                        className="gradientBtn"
+                                    >
+                                        <RefreshCcw className="h-4 w-4 mr-2" />
+                                        Refresh
+                                    </Button>
+                            }
                         </div>
 
                         <Card className="cardBg">
-                            <CardContent className="py-12 text-center">
+                            <CardContent className="text-center">
                                 {repliesLoading ? (
                                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-                                        {Array.from({ length: 3}).map((_, idx) => <DirectReplyCardSkeleton key={idx} />)}
+                                        {Array.from({ length: 3 }).map((_, idx) => <DirectReplyCardSkeleton key={idx} />)}
                                     </div>
                                 )
                                     : directReplies.length === 0 ? (
                                         <EmptyState message="No direct replies yet." />
                                     ) : (
-                                        <div className="space-y-3">
-                                            {directReplies.map((reply) => (
-                                                <DirectReplyCard
-                                                    key={String(reply._id)}
-                                                    reply={reply}
-                                                    onDelete={handleDeleteReply}
-                                                />
-                                            ))}
-                                        </div>
+                                        <>
+                                            <h3 className="font-semibold text-xl mb-5 text-left">
+                                                Your Direct Replies:
+                                            </h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                {directReplies.map((reply) => (
+                                                    <DirectReplyCard
+                                                        key={String(reply._id)}
+                                                        reply={reply}
+                                                        onDelete={handleDeleteReply}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </>
                                     )}
                             </CardContent>
                         </Card>
@@ -300,7 +315,6 @@ const Dashboard = () => {
                 </Tabs>
             </div>
 
-            {/* Create Question Dialog */}
             <QuestionFormDialog
                 open={createDialogOpen}
                 onOpenChange={setCreateDialogOpen}
@@ -318,7 +332,6 @@ const Dashboard = () => {
                 submitLabel={createMutation.isPending ? 'Creating...' : 'Create Question'}
             />
 
-            {/* Edit Question Dialog */}
             <QuestionFormDialog
                 open={editDialogOpen}
                 onOpenChange={setEditDialogOpen}
