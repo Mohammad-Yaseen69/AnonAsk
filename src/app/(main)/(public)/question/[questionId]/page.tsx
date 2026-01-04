@@ -38,21 +38,19 @@ const QuestionReply = () => {
                         Annonymous Message
                     </h1>
                     <p className="font-semibold mt-1 text-foreground text-sm">
-                        Send annoymous message to, {user?.fullName}
+                        Answer this question anonymously for, {user?.fullName}
                     </p>
                     <SendMessageSection
                         isDirectReply={false}
                         userId={user?._id?.toString() || ''}
                         questionId={questionId?.toString() || ''}
                         suggestions={suggestions}
-                        isLoading={isSuggesting}
+                        isLoading={isSuggesting || isUserFetching}
+                        isAISuggestions={true}
+                        questionText={question?.questionText}
                     />
                 </div>
             </div>
-
-
-
-
         </div>
     )
 }

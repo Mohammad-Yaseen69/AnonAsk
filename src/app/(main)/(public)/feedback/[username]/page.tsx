@@ -5,11 +5,13 @@ import { getDirectSuggestions } from '@/helpers/getDirectSuggestions'
 import { getUserInformation } from '@/queries/Reply'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const DirectFeedBack = () => {
     const params = useParams()
     const { username } = params
+    const [suggestions, setSuggestions] = useState<string[]>([]) // Initialize empty
+
 
 
     const { data: user, isLoading: isUserFetching } = useQuery({
@@ -18,8 +20,13 @@ const DirectFeedBack = () => {
         enabled: !!username
     })
 
-    const suggestions: string[] = getDirectSuggestions()
-
+    useEffect(() => {
+        const fetchSuggestions = () => {
+            const suggestions = getDirectSuggestions(5)
+            setSuggestions(suggestions)
+        }
+        fetchSuggestions()
+    }, [])
     return (
         <div className="min-h-screen max-w-7xl py-10 mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col gap-6">
@@ -34,7 +41,8 @@ const DirectFeedBack = () => {
                         isDirectReply={true}
                         userId={user?._id?.toString() || ''}
                         suggestions={suggestions}
-                        isLoading={false}
+                        isLoading={isUserFetching}
+                        isAISuggestions={false}
                     />
                 </div>
             </div>
