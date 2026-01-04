@@ -7,59 +7,75 @@ const prompt = `Generate 2-5 short, natural reply suggestions for the given ques
 
 export async function POST(req: Request) {
     try {
-        const { question } = await req.json()
+        const { question, token } = await req.json()
+        const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown"
 
-        if (!question || typeof question !== 'string') {
-            return Response.json(ApiResponse(400, "Question is required"), { status: 400 })
-        }
-
-        const cacheKey = `suggestion:${question.trim().toLowerCase()}`
-
-        const cachedSuggestions = await redis.get(cacheKey)
-
-        if (cachedSuggestions) {
-            console.log('Cache HIT:', question.substring(0, 50))
-            return new Response(cachedSuggestions as string, {
-                headers: {
-                    'Content-Type': 'text/plain',
-                    'X-Cache': 'HIT'
-                }
+        if (!question || typeof question !== "string") {
+            return Response.json(ApiResponse(400, "Question is required"), {
+                status: 400,
             })
         }
 
-        console.log('Cache MISS:', question.substring(0, 50))
+        if (!token || typeof token !== "string") {
+            return Response.json(ApiResponse(401, "Token is required"), {
+                status: 401,
+            })
+        }
+
+        const tokenKey = `suggest:token:${token}`
+        const tokenDataRaw = await redis.get(tokenKey)
+
+        if (!tokenDataRaw) {
+            return Response.json(ApiResponse(401, "Invalid or expired token"), {
+                status: 401,
+            })
+        }
+
+        const tokenData = JSON.parse(tokenDataRaw as string)
+
+        if (tokenData.ip !== ip) {
+            return Response.json(ApiResponse(401, "Token IP mismatch"), {
+                status: 401,
+            })
+        }
+
+        await redis.del(tokenKey)
+
+        const cacheKey = `suggestion:${question.trim().toLowerCase()}`
+        const cachedSuggestions = await redis.get(cacheKey)
+
+        if (cachedSuggestions) {
+            console.log("Cache HIT:", question.substring(0, 50))
+            return new Response(cachedSuggestions as string, {
+                headers: {
+                    "Content-Type": "text/plain",
+                    "X-Cache": "HIT",
+                },
+            })
+        }
+
+        console.log("Cache MISS:", question.substring(0, 50))
 
         const result = await streamText({
             model: openai("gpt-4o-mini"),
             system: prompt,
-            messages: [
-                {
-                    role: "user",
-                    content: question
-                }
-            ],
+            messages: [{ role: "user", content: question }],
             maxOutputTokens: 80,
-            maxRetries: 2
+            maxRetries: 2,
         })
 
         const fullText = await result.text
 
         await redis.set(cacheKey, fullText, { ex: 60 * 60 * 24 * 7 })
-
-        console.log('Cached for:', question.substring(0, 50))
+        console.log("Cached for:", question.substring(0, 50))
 
         return new Response(fullText, {
-            headers: {
-                'Content-Type': 'text/plain',
-                'X-Cache': 'MISS'
-            }
+            headers: { "Content-Type": "text/plain", "X-Cache": "MISS" },
         })
-
     } catch (error) {
-        console.error('Error in suggest API:', error)
-        return Response.json(
-            ApiResponse(500, "Failed to generate suggestions"),
-            { status: 500 }
-        )
+        console.error("Error in suggest API:", error)
+        return Response.json(ApiResponse(500, "Failed to generate suggestions"), {
+            status: 500,
+        })
     }
 }
