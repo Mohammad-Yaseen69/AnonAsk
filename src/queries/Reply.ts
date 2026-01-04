@@ -58,9 +58,11 @@ export const getAISuggestion = async (questionText: string) => {
             question: questionText
         }
 
-        const token = await generateSuggestionToken()
 
-        payload.token = token
+        // Token verification logic - commenting it now, will use in future if needed
+
+        // const token = await generateSuggestionToken()
+        // payload.token = token
 
         const res = await axios.post(`/api/reply/suggest`, payload, {
             responseType: 'text'
