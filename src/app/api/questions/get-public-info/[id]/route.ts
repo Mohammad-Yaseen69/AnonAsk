@@ -1,8 +1,10 @@
 import { ApiResponse } from "@/helpers/apiResponse"
 import Questions from "@/models/Questions.model"
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
-
+export async function GET(
+    _req: Request, 
+    { params }: { params: Promise<{ id: string }> } 
+) {
     try {
         const param = await params
         const id = param.id

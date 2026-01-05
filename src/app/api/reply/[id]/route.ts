@@ -3,7 +3,10 @@ import { checkAuth } from "@/helpers/checkAuth"
 import Questions from "@/models/Questions.model"
 import Replies from "@/models/Replies.model"
 
-export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+    _req: Request, 
+    { params }: { params: Promise<{ id: string }> }
+) {
     try {
         const authcheck = await checkAuth(true)
 

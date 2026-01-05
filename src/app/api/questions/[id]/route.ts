@@ -6,8 +6,10 @@ import Questions from "@/models/Questions.model";
 import Replies from "@/models/Replies.model";
 import { UpdateQuestionInput, UpdateQuestionSchema } from "@/schemas/Questions.validation";
 
-
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(
+    req: Request, 
+    { params }: { params: Promise<{ id: string }> }
+) {
     try {
         const authcheck = await checkAuth(true)
 
@@ -50,7 +52,10 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     }
 }
 
-export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+    _req: Request, 
+    { params }: { params: Promise<{ id: string }> } 
+) {
     try {
         const authcheck = await checkAuth(true)
 
@@ -83,8 +88,10 @@ export async function DELETE(_req: Request, { params }: { params: { id: string }
     }
 }
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
-
+export async function GET(
+    _req: Request, 
+    { params }: { params: Promise<{ id: string }> } 
+) {
     try {
         const authcheck = await checkAuth(true)
 
