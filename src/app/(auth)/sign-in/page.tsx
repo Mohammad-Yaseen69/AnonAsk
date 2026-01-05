@@ -36,9 +36,10 @@ const SignUp = () => {
       redirect: false
     })
 
-    if (!result?.status) {
+    console.log(result)
+    if (!result?.ok) {
       toast.error(result?.error || "Login Failed", {
-        description: "Please try again later.",
+        description: result?.status === 401 ? "Please provide valid credentials." : "Please try again later!",
         position: "bottom-right",
       })
     } else {

@@ -26,17 +26,17 @@ export const authOptions: NextAuthOptions = {
                 })
 
                 if (!user) {
-                    throw new Error("User not Found")
-                }
-
-                if (!user.isVerified) {
-                    throw new Error("Please verify your email.")
+                    throw new Error("Invalid Credentials")
                 }
 
                 const isPasswordCorrect = await comparePassword(credentials?.password || "", user.password)
 
                 if (!isPasswordCorrect) {
-                    throw new Error("Invalid Password.")
+                    throw new Error("Invalid Credentials.")
+                }
+
+                if (!user.isVerified) {
+                    throw new Error("Please verify your email.")
                 }
 
                 return user
