@@ -1,10 +1,12 @@
 import { ApiResponse } from "@/helpers/apiResponse"
+import dbConnect from "@/lib/dbConnect"
 import Questions from "@/models/Questions.model"
 
 export async function GET(
     _req: Request, 
     { params }: { params: Promise<{ id: string }> } 
 ) {
+    await dbConnect()
     try {
         const param = await params
         const id = param.id
