@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import { MessageSquare, Github, Twitter, Mail, Linkedin } from 'lucide-react'
+import { Github, Twitter, Linkedin } from 'lucide-react'
+import Image from 'next/image'
 
 const Footer = ({ isDashboard }: { isDashboard?: boolean }) => {
   return (
@@ -11,8 +12,11 @@ const Footer = ({ isDashboard }: { isDashboard?: boolean }) => {
 
             <div className="space-y-4">
               <Link href="/" className="flex items-center gap-2 group">
-                <MessageSquare className="h-6 w-6 text-purple-400 group-hover:text-purple-300 transition-colors" />
-                <span className="text-lg font-bold gradientText">AnonAsk</span>
+                <div className="relative flex items-center">
+                  <Image src='/logo.png' width={25} height={10} alt='logo' />
+                  <div className="absolute inset-0 bg-purple-500/20 blur-xl rounded-full group-hover:bg-purple-500/30 transition-colors" />
+                </div>
+                <span className="text-xl font-bold gradientText">AnonAsk</span>
               </Link>
               <p className="text-sm text-muted-foreground max-w-xs">
                 Anonymous Q&A platform where you can ask questions and receive honest feedback with AI-powered suggestions.
