@@ -5,7 +5,7 @@ import { IResponse } from "@/types/Responses";
 export const sendEmail = async (email: string, otp: number, username: string): Promise<IResponse> => {
     try {
         await resend.emails.send({
-            from: 'Acme <onboarding@resend.dev>',
+            from: 'Anon Ask <no-reply@anon-ask.site>',
             to: email,
             subject: 'AnonAsk Account Verification',
             react: VerifyEmail({ otp }),
